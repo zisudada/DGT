@@ -7,12 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.sukabing.linkingtheworld.Constants;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class MainStage extends Stage{
     Constants c;
     Texture t1,t2,t3,t4,t5,t6,t7,t8,t9,t10;
     Image avatar,local_network,chat,figures,mods,stand,settings,shop,announcement,bg;
     Group group1;
+    SequenceAction sequence1;
+    AlphaAction alpha1,alpha2;
     public MainStage(){
         super();
         init();
@@ -120,6 +125,10 @@ public class MainStage extends Stage{
         group1.addActor(shop);
         group1.addActor(announcement);
         
+        alpha1 = Actions.alpha(0);
+        alpha2 = Actions.fadeIn(1);
+        sequence1 = Actions.sequence(alpha1,alpha2);
+        group1.addAction(sequence1);
         this.addActor(group1);
         
     }
