@@ -1,15 +1,20 @@
 package com.sukabing.linkingtheworld.Stages;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.sukabing.linkingtheworld.Constants;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.sukabing.linkingtheworld.Constants;
 
 public class MainStage extends Stage{
     Constants c;
@@ -18,8 +23,61 @@ public class MainStage extends Stage{
     Group group1;
     SequenceAction sequence1;
     AlphaAction alpha1,alpha2;
+    
+    Texture t_bg;
+    Image ok,cancel,show;
+    Window dialogWinow;
+    BitmapFont font;
+    
     public MainStage(){
         super();
+        
+        ok = new Image(new Texture(Gdx.files.internal("main_stage_res/ok.jpg")));
+        ok.setSize(100,100);
+        ok.setPosition(0,0);
+        cancel = new Image(new Texture(Gdx.files.internal("main_stage_res/cancel.jpg")));
+        cancel.setSize(100,100);
+        cancel.setPosition(200,0);
+        show =  new Image(new Texture(Gdx.files.internal("main_stage_res/show.jpg")));
+        show.setSize(100,100);
+        show.setPosition(100,100);
+        t_bg = new Texture(Gdx.files.internal("main_stage_res/bg.jpg"));
+        font = new BitmapFont();
+        TextureRegionDrawable windowDrawable = new TextureRegionDrawable(new TextureRegion(t_bg));
+        Window.WindowStyle stlye = new Window.WindowStyle(font,Color.RED,windowDrawable);
+        dialogWinow = new Window("window",stlye);
+
+        dialogWinow.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        dialogWinow.setModal(true);
+
+        ok.addListener(new InputListener(){
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    Gdx.app.exit();
+                    return true;
+                }
+
+            });
+        cancel.addListener(new InputListener(){
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    dialogWinow.remove();
+                    return true;
+                }
+
+            });
+            /*
+        show.addListener(new InputListener(){
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    addActor(dialogWinow);
+                    return true;
+                }
+
+            });
+*/
+        dialogWinow.addActor(ok);
+        dialogWinow.addActor(cancel);
+        //this.addActor(show);
+        
+        
         init();
     }
     
@@ -60,7 +118,8 @@ public class MainStage extends Stage{
         local_network.setPosition(local_network.getWidth(),c.h()/2-local_network.getHeight());
         local_network.addListener(new InputListener(){
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    Gdx.app.exit();
+                    //Gdx.app.exit();
+                    addActor(dialogWinow);
                     return true;
                 }
 
@@ -130,6 +189,8 @@ public class MainStage extends Stage{
         sequence1 = Actions.sequence(alpha1,alpha2);
         group1.addAction(sequence1);
         this.addActor(group1);
+        
+        
         
     }
 }
