@@ -6,7 +6,7 @@ public class Constants {
     public static int StageFlag = 0;
     
     final public static int MainStage = 0;
-    
+    final public static int GameStage = 1;
     public static int w(){
         return Gdx.graphics.getWidth();
     }
